@@ -112,8 +112,16 @@ int main(int argc, char const *argv[])
         }
         //Новые параметры таймера
         timeout = atoi(buffer);
-        timer.it_value.tv_sec = timeout;
-        timer.it_value.tv_usec = 0;
+        if (timeout == 0)
+        {
+            timer.it_value.tv_sec = timeout;
+            timer.it_value.tv_usec = 50;
+        } else
+        {
+            timer.it_value.tv_sec = timeout;
+            timer.it_value.tv_usec = 0;
+        }
+        
         //Вывод оставшегося промежутка времени
         printf("ОБНОВЛЕНО: Сообщения могут быть приняты в течение следующего времени: %d [с]\n", timeout);
         //Установка обновлённого таймера
@@ -135,6 +143,7 @@ int main(int argc, char const *argv[])
         } 
         //Вывод полученного сообщения
         printf("Сообщение (приоритет - %d): \"%s\"\n", msg_prio, buffer);
+        
     }
     
     closing_mq(queue);
